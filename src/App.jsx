@@ -3,14 +3,21 @@
 //import viteLogo from '/vite.svg'
 //import './App.css'
 
-import Dashboard from './pages/dashboard';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SettingsProvider } from "./context/SettingsContext";
+import Dashboard from "./pages/dashboard";
+import WidgetDetail from "./pages/WidgetDetail";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-4">Personalized_Dashboard</h1>
-      <Dashboard />
-    </div>
+    <SettingsProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />  Per
+          <Route path="/widget/:id" element={<WidgetDetail />} />
+        </Routes>
+      </Router>
+    </SettingsProvider>
   );
 }
 

@@ -6,11 +6,22 @@ const SettingsContext = createContext();
 export const useSettings = () => useContext(SettingsContext);
 
 export const SettingsProvider = ({ children }) => {
-  const [settings, setSettings] = useState({
+const [settings, setSettings] = useState(() => {
+  const stored = localStorage.getItem("dashboardSettings");
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch (err) {
+      console.error("Error parsing saved settings:", err);
+    }
+  }
+  return {
     theme: 'light',
     widgetStyles: {},
-    widgetTitles: {}
-  });
+    widgetTitles: {},
+    layoutMode: 'grid'
+  };
+});
 
   
 
@@ -28,7 +39,9 @@ export const SettingsProvider = ({ children }) => {
 
   // Save to localStorage whenever settings change
   useEffect(() => {
+    console.log("💾 Saving settings to localStorage:", settings);
     localStorage.setItem('dashboardSettings', JSON.stringify(settings));
+    
   }, [settings]);
 
  
@@ -57,7 +70,7 @@ export const SettingsProvider = ({ children }) => {
   };
 
   return (
-    <SettingsContext.Provider value={{ settings, updateWidgetStyle, updateWidgetTitle }}>
+    <SettingsContext.Provider value={{ settings, setSettings, updateWidgetStyle, updateWidgetTitle }}>
       {children}
     </SettingsContext.Provider>
   );
