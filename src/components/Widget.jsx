@@ -1,11 +1,11 @@
 // components/Widget.jsx
-import { useState, memo } from 'react';
+import { useState, memo ,useEffect} from 'react';
 import { motion } from 'framer-motion';
 import { useSettings } from '../context/SettingsContext';
 import { scaleIn, exitFade } from '../utils/motionUtils';
 import SettingsModal from './SettingModal';
 
-const Widget = memo(function Widget({ id, title, description, children }) {
+const Widget = memo(function Widget({ id, title, description, children,layout='' }) {
   const [showDescription, setShowDescription] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { settings } = useSettings();
@@ -20,14 +20,39 @@ const Widget = memo(function Widget({ id, title, description, children }) {
       ? 'bg-gray-800 text-white'
       : 'bg-white text-gray-800';
 
+   const layoutClasses =
+    layout === "list"
+      ? "w-full flex flex-col sm:flex-row sm:items-center sm:justify-between"
+      : "w-auto";
+
+
+   //🔹 Keyboard Shortcuts (Alt+D to toggle description, Alt+S to open settings)
+  
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.altKey && e.key.toLowerCase() === "d") {
+        toggleDescription();
+      }
+      if (e.altKey && e.key.toLowerCase() === "s") {
+        setIsSettingsOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+
   return (
+
+    
     <motion.div
       variants={{ ...scaleIn, ...exitFade }}
       initial="hidden"
       animate="visible"
       exit="exit"
       layout
-      className={`shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 ${themeClass}`}
+      className={`shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 ${themeClass} ${layoutClasses}`}
       style={widgetStyle}
       role="region"
       aria-label={`${title} widget`}
@@ -58,7 +83,7 @@ const Widget = memo(function Widget({ id, title, description, children }) {
         {showDescription ? 'Hide' : 'Show'} Description
       </button>
 
-      {children && <div className="mt-4">{children}</div>}
+      {children && <div className="mt-4-full">{children}</div>}
 
       {/* Settings Modal */}
       <SettingsModal

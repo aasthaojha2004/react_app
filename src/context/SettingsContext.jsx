@@ -12,6 +12,8 @@ export const SettingsProvider = ({ children }) => {
     widgetTitles: {}
   });
 
+  
+
   // Load from localStorage on start
   useEffect(() => {
     const saved = localStorage.getItem('dashboardSettings');
@@ -28,6 +30,8 @@ export const SettingsProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('dashboardSettings', JSON.stringify(settings));
   }, [settings]);
+
+ 
 
   const updateWidgetStyle = (id, style) => {
     setSettings(prev => ({

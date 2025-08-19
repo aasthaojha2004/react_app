@@ -9,6 +9,10 @@ import SettingsModal from '../components/SettingModal';
 import { useSettings } from '../context/SettingsContext';
 import { useModal } from '../hooks/useModal';
 //import React from 'react';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { Pagination, Navigation } from "swiper/modules";
+import DashboardCarousel from "../components/DashboardCarousel.jsx"; 
 
 const initialWidgets = [
   { id: 1, type: 'weather', title: 'Weather', data: null },
@@ -19,6 +23,9 @@ const initialWidgets = [
 function Dashboard() {
   const [widgets, setWidgets] = useState(initialWidgets);
   const { settings } = useSettings();
+  const [layoutMode, setLayoutMode] = useState("grid");
+ 
+
 
   const settingsModal = useModal();
   const [activeWidgetId, setActiveWidgetId] = useState(null);
@@ -51,7 +58,26 @@ function Dashboard() {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="w-full p-4">
+      {/* ✅ NEW: Layout toggle button (hidden on mobile since carousel is default there) */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setLayoutMode(layoutMode === "grid" ? "list" : "grid")}
+          className="px-3 py-1 rounded-lg bg-blue-500 text-white shadow hover:bg-blue-600 transition hidden sm:block"
+        >
+          {layoutMode === "grid" ? "Switch to List" : "Switch to Grid"}
+        </button>
+      </div>
+
+      {/* ✅ Desktop/Tablet Layout (Grid/List) */}
+      <div
+        className={`hidden sm:grid gap-4 ${
+          layoutMode === "grid"
+            ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            : "flex flex-col"
+        }`}
+      >
+
         <AnimatePresence>
           {widgets.map(widget => {
             const style = settings.widgetStyles[widget.id] || {};
@@ -63,8 +89,9 @@ function Dashboard() {
                 id={widget.id}
                 title={savedTitle}
                 description={`This is your ${savedTitle.toLowerCase()} widget.`}
+                layout={layoutMode}
                 style={{ backgroundColor: style.backgroundColor || '#fef3c7' }}
-                onSettingsClick={() => openSettings(widget.id)}
+                onSettingsClick={() => openSettings(widget.id)} 
               >
                 {renderWidgetContent(widget)}
               </Widget>
@@ -72,6 +99,15 @@ function Dashboard() {
           })}
         </AnimatePresence>
       </div>
+        <div className="sm:hidden">
+          <DashboardCarousel
+            widgets={widgets}
+            settings={settings}
+            renderWidgetContent={renderWidgetContent}
+            openSettings={openSettings}
+            slidesPerView={1}
+          />
+        </div>
 
       {activeWidgetId && (
         <SettingsModal
@@ -80,9 +116,9 @@ function Dashboard() {
           widgetId={activeWidgetId}
         />
       )}
+      </div>
     </>
   );
 }
 
 export default Dashboard;
-//import React from 'react';

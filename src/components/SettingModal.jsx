@@ -1,5 +1,5 @@
 // components/SettingsModal.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import Modal from './Modal';
 import { useSettings } from '../context/SettingsContext';
 
@@ -12,10 +12,25 @@ const SettingsModal = ({ isOpen, onClose, widgetId }) => {
   const [color, setColor] = useState(currentStyle.backgroundColor || '#fef3c7');
   const [title, setTitle] = useState(currentTitle);
 
+  const closeButtonRef = useRef(null); // store ref to Close button
+  const prevActiveElement = useRef(null);
+
   useEffect(() => {
     setColor(currentStyle.backgroundColor || '#fef3c7');
     setTitle(currentTitle);
   }, [currentStyle, currentTitle]);
+
+    // ⬅️ Accessibility: Manage focus when modal opens/closes
+  useEffect(() => {
+    if (isOpen) {
+      prevActiveElement.current = document.activeElement; // save what had focus before
+      // move focus to the first focusable element in modal (here Close button)
+      closeButtonRef.current?.focus();
+    } else {
+      // restore focus when modal closes
+      prevActiveElement.current?.focus();
+    }
+  }, [isOpen]);
 
   const handleSave = () => {
     updateWidgetStyle(widgetId, { backgroundColor: color });
