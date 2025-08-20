@@ -1,14 +1,19 @@
+//uld you merge 
 // pages/WidgetDetail.jsx
 import { useParams } from "react-router-dom";
 import { useSettings } from "../context/SettingsContext";
 import NotesWidget from "../components/NotesWidget";
 import TodoWidget from "../components/ToDoWidget";
 import WeatherWidget from "../components/WeatherWidget";
+import CalculatorWidget from "../components/CalculatorWidget.jsx";
+import CalendarWidget from "../components/CalendarWidget";
 
 const initialWidgets = [
   { id: 1, type: "weather", title: "Weather", data: null },
   { id: 2, type: "notes", title: "Notes", data: [] },
   { id: 3, type: "todo", title: "To-Do", data: [] },
+  { id: 4, type: "calculator", title: "Calculator", data: null },
+  { id: 5, type: "calendar", title: "Calendar", data: null }
 ];
 
 function WidgetDetail() {
@@ -24,6 +29,10 @@ const renderWidgetContent = () => {
         return <TodoWidget data={widget.data || []} />;
       case "weather":
         return <WeatherWidget data={widget.data} />;
+      case "calculator":
+        return <CalculatorWidget data={widget.data} />;
+      case "calendar":
+        return <CalendarWidget data={widget.data} />;
       default:
         return <div>Unknown widget</div>;
     }
@@ -50,3 +59,5 @@ const renderWidgetContent = () => {
 }
 
 export default WidgetDetail;
+// Merge this Widget Page because I feel they serve the same purpose
+//d here is WidgetDetail Code

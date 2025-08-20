@@ -5,13 +5,15 @@ import {
   Draggable
 } from '@hello-pangea/dnd';
 import Widget from './Widget';
-import { useLocalStorage } from '../hooks/useLocalStorage'; // ✅ Import the hook
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useSettings } from '../context/SettingsContext'; // ✅ Import theme context
 
 function TodoWidget({ id }) {
-  const [tasks, setTasks] = useLocalStorage(`todo-${id}`, []); // ✅ Use the hook
+  const [tasks, setTasks] = useLocalStorage(`todo-${id}`, []);
   const [input, setInput] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [editInput, setEditInput] = useState('');
+  const { settings } = useSettings(); // ✅ Access theme
 
   const handleAddTask = () => {
     if (input.trim()) {
@@ -57,7 +59,6 @@ function TodoWidget({ id }) {
   return (
     <Widget
       id={id}
-     // title="To-Do"
       description="Manage your tasks with drag-and-drop, editing, and completion tracking."
     >
       <input
@@ -65,12 +66,14 @@ function TodoWidget({ id }) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Add a task..."
-        className="border border-gray-300 rounded px-3 py-2 w-full mb-2"
+        className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 w-full mb-2
+                   bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
       />
 
       <button
         onClick={handleAddTask}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600
+                   dark:bg-blue-600 dark:hover:bg-blue-700"
       >
         Add Task
       </button>
@@ -84,7 +87,9 @@ function TodoWidget({ id }) {
               ref={provided.innerRef}
             >
               {tasks.length === 0 ? (
-                <p className="text-gray-500">No tasks yet. Add one!</p>
+                <p className="text-gray-500 dark:text-gray-400">
+                  No tasks yet. Add one!
+                </p>
               ) : (
                 tasks.map((task, index) => (
                   <Draggable key={index} draggableId={`task-${index}`} index={index}>
@@ -93,7 +98,9 @@ function TodoWidget({ id }) {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="flex flex-col sm:flex-row sm:items-center justify-between bg-gray-100 px-3 py-2 rounded"
+                        className="flex flex-col sm:flex-row sm:items-center justify-between 
+                                   bg-gray-100 dark:bg-gray-800 
+                                   px-3 py-2 rounded"
                       >
                         {editingIndex === index ? (
                           <div className="flex flex-col sm:flex-row sm:items-center w-full gap-2">
@@ -101,11 +108,15 @@ function TodoWidget({ id }) {
                               type="text"
                               value={editInput}
                               onChange={(e) => setEditInput(e.target.value)}
-                              className="border border-gray-300 rounded px-2 py-1 flex-grow"
+                              className="border border-gray-300 dark:border-gray-600 
+                                         rounded px-2 py-1 flex-grow
+                                         bg-white dark:bg-gray-700
+                                         text-gray-900 dark:text-gray-100"
                             />
                             <button
                               onClick={handleSaveEdit}
-                              className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                              className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600
+                                         dark:bg-green-600 dark:hover:bg-green-700"
                             >
                               Save
                             </button>
@@ -115,7 +126,9 @@ function TodoWidget({ id }) {
                             <span
                               onClick={() => handleToggleComplete(index)}
                               className={`flex-grow cursor-pointer ${
-                                task.completed ? 'line-through text-gray-400' : ''
+                                task.completed
+                                  ? 'line-through text-gray-400 dark:text-gray-500'
+                                  : 'text-gray-900 dark:text-gray-100'
                               }`}
                             >
                               {task.text}
