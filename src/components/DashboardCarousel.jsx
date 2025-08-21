@@ -57,7 +57,7 @@ export default function DashboardCarousel({
 
               <h2 className="font-bold text-lg">{savedTitle}</h2>
               <p className="text-sm text-gray-700">
-                This is your {savedTitle.toLowerCase()} widget.
+              This is your {savedTitle ? savedTitle.toLowerCase() : "widget"} widget.
               </p>
             </div>
           </SwiperSlide>

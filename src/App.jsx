@@ -13,7 +13,7 @@ function App() {
     <SettingsProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Dashboard />} />  Per
+          <Route path="/" element={<Dashboard />} />  
           <Route path="/widget/:id" element={<WidgetDetail />} />
         </Routes>
       </Router>

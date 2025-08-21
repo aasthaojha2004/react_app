@@ -1,7 +1,6 @@
 // components/CalendarWidget.jsx
 import { useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useSettings } from "../context/SettingsContext";
 
@@ -36,16 +35,16 @@ function CalendarWidget() {
     setSettings({ ...settings, calendarMarks: items });
   };
 
-  // Highlight marked dates in calendar
+  // Highlight marked dates
   const tileClassName = ({ date }) => {
-    if (
-      settings.calendarMarks.some(
-        (m) => new Date(m.iso).toDateString() === date.toDateString()
-      )
-    ) {
-      return "bg-blue-300 rounded-full"; // ✅ highlight
+    const isMarked = settings.calendarMarks.some(
+      (m) => new Date(m.iso).toDateString() === date.toDateString()
+    );
+
+    if (isMarked) {
+      return "bg-blue-500 text-white rounded-full"; // marked date
     }
-    return null;
+    return "hover:bg-slate-700 rounded-full transition-colors duration-200";
   };
 
   // Filter list → only current month/year
@@ -62,14 +61,17 @@ function CalendarWidget() {
       <h2 className="text-lg font-bold mb-2">📅 Calendar</h2>
 
       {/* Calendar */}
-      <Calendar
-        onChange={setSelectedDate}
-        value={selectedDate}
-        tileClassName={tileClassName}
-        onActiveStartDateChange={({ activeStartDate }) =>
-          setCurrentView(activeStartDate)
-        }
-      />
+      <div className="rounded overflow-hidden">
+        <Calendar
+          onChange={setSelectedDate}
+          value={selectedDate}
+          tileClassName={tileClassName}
+          onActiveStartDateChange={({ activeStartDate }) =>
+            setCurrentView(activeStartDate)
+          }
+          className="bg-transparent text-gray-800 dark:text-gray-200 [&_.react-calendar__navigation]:flex [&_.react-calendar__navigation]:justify-between [&_.react-calendar__navigation button]:bg-transparent [&_.react-calendar__navigation button]:px-2 [&_.react-calendar__navigation button]:rounded [&_.react-calendar__navigation button:hover]:bg-slate-200 dark:[&_.react-calendar__navigation button:hover]:bg-slate-700 [&_.react-calendar__month-view__weekdays__weekday]:text-gray-600 dark:[&_.react-calendar__month-view__weekdays__weekday]:text-gray-400  dark:bg-gray-800"
+        />
+      </div>
 
       {/* Mark date */}
       <div className="mt-3">
@@ -81,7 +83,7 @@ function CalendarWidget() {
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="Reason for marking"
-          className="border p-2 w-full mt-2 rounded dark:bg-gray-700"
+          className="border p-2 w-full mt-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
         />
         <button
           onClick={handleMarkDate}
@@ -94,7 +96,8 @@ function CalendarWidget() {
       {/* Marked list with drag/drop */}
       <div className="mt-4">
         <h3 className="font-semibold mb-2">
-          Marked Dates for {currentView.toLocaleString("default", { month: "long" })}{" "}
+          Marked Dates for{" "}
+          {currentView.toLocaleString("default", { month: "long" })}{" "}
           {currentView.getFullYear()}
         </h3>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -112,7 +115,7 @@ function CalendarWidget() {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="p-2 border rounded bg-gray-100 dark:bg-gray-700"
+                        className="p-2 border rounded bg-gray-100 dark:bg-gray-700 dark:text-gray-200"
                       >
                         <span className="font-bold">{item.date}</span>:{" "}
                         {item.reason}

@@ -16,10 +16,10 @@ export default function AddWidgetButton() {
   return (
     <div className="flex gap-2 my-4">
       <button
-        onClick={() => handleAdd("weather")}
+        onClick={() => handleAdd("stopwatch")}
         className="px-3 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700"
       >
-        ➕ Add Weather
+        ➕ Add StopWatch
       </button>
       <button
         onClick={() => handleAdd("calendar")}
