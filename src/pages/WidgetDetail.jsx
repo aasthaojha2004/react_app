@@ -3,9 +3,9 @@
 import { useParams } from "react-router-dom";
 import { useSettings } from "../context/SettingsContext";
 import NotesWidget from "../components/NotesWidget";
-import TodoWidget from "../components/ToDoWidget.jsx"
+import TodoWidget from "../components/ToDoWidget"
 import WeatherWidget from "../components/WeatherWidget";
-import CalculatorWidget from "../components/CalculatorWidget.jsx";
+import CalculatorWidget from "../components/CalculatorWidget";
 import CalendarWidget from "../components/CalendarWidget";
 
 const initialWidgets = [
