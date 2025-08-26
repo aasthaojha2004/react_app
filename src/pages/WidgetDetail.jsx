@@ -3,7 +3,7 @@
 import { useParams } from "react-router-dom";
 import { useSettings } from "../context/SettingsContext";
 import NotesWidget from "../components/NotesWidget";
-import TodoWidget from "../components/ToDoWidget";
+import TodoWidget from "../components/ToDoWidget.jsx"
 import WeatherWidget from "../components/WeatherWidget";
 import CalculatorWidget from "../components/CalculatorWidget.jsx";
 import CalendarWidget from "../components/CalendarWidget";

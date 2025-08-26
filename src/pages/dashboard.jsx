@@ -5,16 +5,16 @@ import { useSettings } from "../context/SettingsContext";
 import { useModal } from "../hooks/useModal";
 import SettingsModal from "../components/SettingModal";
 import DashboardCarousel from "../components/DashboardCarousel.jsx";
-import WeatherWidget from "../components/WeatherWidget.jsx";
-import NotesWidget from "../components/NotesWidget.jsx";
-import TodoWidget from "../components/ToDoWidget.jsx";
-import CalculatorWidget from "../components/CalculatorWidget.jsx";
-import CalendarWidget from "../components/CalendarWidget.jsx";
+//port WeatherWidget from "../components/WeatherWidget.jsx";
+//port NotesWidget from "../components/NotesWidget.jsx";
+//port TodoWidget from "../components/ToDoWidget.jsx";
+//port CalculatorWidget from "../components/CalculatorWidget.jsx";
+//port CalendarWidget from "../components/CalendarWidget.jsx";
 import LayoutControls from "../components/LayoutControls.jsx";
 import WidgetGrid from "../components/WidgetGrid.jsx";
 import AddWidgetSection from "../components/AddWidgetSection.jsx";
-import StopwatchWidget from "../components/StopWatchWidget.jsx";
-import { widgetRegistry } from "../helper/WidgetRegistry"; // ✅ Import widget registry
+//port StopwatchWidget from "../components/StopWatchWidget.jsx";
+//port { widgetRegistry } from "../helper/WidgetRegistry"; // ✅ Import widget registry
 
 const initialWidgets = [
   { id: 1, type: "weather", title: "Weather", data: null },
