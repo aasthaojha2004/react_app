@@ -2,11 +2,11 @@
 // pages/WidgetDetail.jsx
 import { useParams } from "react-router-dom";
 import { useSettings } from "../context/SettingsContext";
-import NotesWidget from "../components/NotesWidget";
-import TodoWidget from "../components/ToDoWidget"
-import WeatherWidget from "../components/WeatherWidget";
-import CalculatorWidget from "../components/CalculatorWidget";
-import CalendarWidget from "../components/CalendarWidget";
+import NotesWidget from "../components/NotesWidget.jsx";
+import TodoWidget from "../components/ToDoWidget.jsx"
+import WeatherWidget from "../components/WeatherWidget.jsx";
+import CalculatorWidget from "../components/CalculatorWidget.jsx";
+import CalendarWidget from "../components/CalendarWidget.jsx";
 
 const initialWidgets = [
   { id: 1, type: "weather", title: "Weather", data: null },
